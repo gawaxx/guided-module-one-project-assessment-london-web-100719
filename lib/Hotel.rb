@@ -19,6 +19,12 @@ class Hotel < ActiveRecord::Base
         # summ of all reviews ratings that belong to an hotel divided by total amout of reviews
         sum = 0
         self.reviews.each {|r| sum += r.rating}
-        sum / self.reviews.size
+        review_size = self.reviews.size
+        if review_size > 0
+            sum / review_size
+        else 
+            "Sorry no reviews exists for this hotel, create one if you wish!"
+        end 
     end
+
 end 
