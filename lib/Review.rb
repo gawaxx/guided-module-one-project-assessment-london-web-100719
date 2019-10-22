@@ -8,6 +8,10 @@ class Review < ActiveRecord::Base
     end
 
     def self.find_by_title(title)
-        Review.find_by(title: title)
+        Review.find_by(title: title) #calls on the table Review in the database
     end
+
+    def delete_review
+        self.delete
+    end 
 end 

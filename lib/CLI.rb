@@ -15,6 +15,7 @@ class CommandLineInterface
         puts "(5) Add a new user"
         puts "(6) Add a new hotel"
         puts "(7) Modify a review you wrote"
+        puts "(8) Delete a review you wrote"
         puts "What do you wish to do?"
         choice = gets.chomp
         if choice == "1"
@@ -38,6 +39,9 @@ class CommandLineInterface
         elsif choice == "7"
             empty_lines
             modify_review
+        elsif choice == "8"
+            empty_lines
+            delete_review 
         elsif choice == "exit"
             puts "k bye"
         else 
@@ -144,6 +148,16 @@ class CommandLineInterface
         new_content = gets.chomp
         review.update_content(new_content)
         puts "Review succesfully updated!"
+        empty_lines
+        start
+    end 
+
+    def delete_review 
+        puts "Enter the title of the review you wish to delete:"
+        input = gets.chomp
+        review = Review.find_by_title(input)
+        review.delete_review
+        puts "Successfully deleted the review"
         empty_lines
         start
     end 
