@@ -2,10 +2,6 @@
 class CommandLineInterface
     def greet
         puts 'Welcome to Tetravago, the best resource for hotel information in the world!'
-    end
-
-    def start 
-        greet 
         puts "here are some options for you, type the number corresponding to the option to call it."
         puts "If you wish to exit, type 'exit'"
         puts "(1) Find a hotel's reviews"
@@ -16,7 +12,12 @@ class CommandLineInterface
         puts "(6) Add a new hotel"
         puts "(7) Modify a review you wrote"
         puts "(8) Delete a review you wrote"
+        puts "(9) Create a review"
         puts "What do you wish to do?"
+    end
+
+    def start 
+        greet 
         choice = gets.chomp
         if choice == "1"
             empty_lines
@@ -42,6 +43,9 @@ class CommandLineInterface
         elsif choice == "8"
             empty_lines
             delete_review 
+        elsif choice == "9"
+            empty_lines
+            create_review
         elsif choice == "exit"
             puts "k bye"
         else 
@@ -119,8 +123,8 @@ class CommandLineInterface
         hotel_name = gets.chomp 
         puts ""
         puts "Enter the hotel's email"
-        email = gets.chomp 
         puts ""
+        email = gets.chomp
         puts "Enter the hotel's address"
         location = gets.chomp 
         puts ""
@@ -130,6 +134,23 @@ class CommandLineInterface
         puts "Successfully added a new hotel !"
         empty_lines
         start
+    end 
+
+    def create_review
+        puts "Allright, first please enter your user name:"
+        user_name = gets.chomp
+        user = User.find_by_name(user_name)
+        puts "Now please eneter the name of the hotel you stayed at"
+        hotel_name = gets.chomp
+        hotel = Hotel.find_by_name(hotel_name)
+        puts "Enter a title for your review"
+        title = gets.chomp 
+        puts "Enter the content of your review"
+        content = gets.chomp
+        new_review = Review.create_review(user.id, hotel.id, title, content)
+        puts "Review successfully created!"
+        empty_lines
+        start 
     end 
 
     def empty_lines 
