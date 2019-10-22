@@ -46,7 +46,7 @@ class CommandLineInterface
         elsif choice == "9"
             empty_lines
             create_review
-        elsif choice == "exit" || "0"
+        elsif choice == "exit" || choice == "0"
             puts "k bye"
         else 
             puts "You didn't want to comply and neither did I, now I am leaving."
