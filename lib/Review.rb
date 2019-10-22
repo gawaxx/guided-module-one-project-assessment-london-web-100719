@@ -15,8 +15,8 @@ class Review < ActiveRecord::Base
         self.delete
     end 
 
-    def self.create_review(user_id, hotel_id, title, content)
-        Review.create(user_id: user_id, hotel_id: hotel_id, title: title, content: content)
+    def self.create_review(user_id, hotel_id, title, content, rating)
+        Review.create(user_id: user_id, hotel_id: hotel_id, title: title, content: content, rating: rating)
     end 
 
 end 

@@ -10,4 +10,15 @@ class Hotel < ActiveRecord::Base
     def self.create_hotel(hotel_name, email, location, phone_number)
         Hotel.create(name: hotel_name, email: email, location: location, phone_number: phone_number)
     end 
+
+    def reviews
+        Review.select {|r| r.hotel == self}
+    end
+
+    def average_rating
+        # summ of all reviews ratings that belong to an hotel divided by total amout of reviews
+        sum = 0
+        self.reviews.each {|r| sum += r.rating}
+        sum / self.reviews.size
+    end
 end 

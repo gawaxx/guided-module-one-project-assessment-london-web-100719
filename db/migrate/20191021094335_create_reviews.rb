@@ -5,6 +5,7 @@ class CreateReviews < ActiveRecord::Migration[5.2]
       t.integer :hotel_id
       t.string :title  
       t.string :content
+      t.integer :rating
     end 
   end
 end

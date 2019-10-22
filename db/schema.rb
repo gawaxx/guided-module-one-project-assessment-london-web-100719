@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 2019_10_21_094335) do
     t.integer "hotel_id"
     t.string "title"
     t.string "content"
+    t.integer "rating"
   end
 
   create_table "users", force: :cascade do |t|

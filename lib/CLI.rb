@@ -13,6 +13,7 @@ class CommandLineInterface
         puts "(7) Modify a review you wrote"
         puts "(8) Delete a review you wrote"
         puts "(9) Create a review"
+        puts "(10) Find a hotel's average rating"
         puts "What do you wish to do?"
     end
 
@@ -46,7 +47,10 @@ class CommandLineInterface
         elsif choice == "9"
             empty_lines
             create_review
-        elsif choice == "exit" || choice == "0"
+        elsif choice == "10"
+            empty_lines
+            hotel_average_rating
+        elsif choice == "exit" ||  choice == "0"
             puts "k bye"
         else 
             puts "You didn't want to comply and neither did I, now I am leaving."
@@ -70,6 +74,7 @@ class CommandLineInterface
             puts ""
             puts "Username: #{review.user.name}"
             puts "Review Content: #{review.content}"
+            puts "Rating: #{review.rating}"
             puts ""
         end
     end
@@ -152,7 +157,9 @@ class CommandLineInterface
             title = gets.chomp 
             puts "Enter the content of your review"
             content = gets.chomp
-            new_review = Review.create_review(user.id, hotel.id, title, content)
+            puts "Please enter the rating, between 1 and 5"
+            rating = gets.chomp
+            new_review = Review.create_review(user.id, hotel.id, title, content, rating)
             puts "Review successfully created!"
             empty_lines
             start 
@@ -188,4 +195,15 @@ class CommandLineInterface
         empty_lines
         start
     end 
+
+   def hotel_average_rating
+       puts "In order to get the average rating of a hotel, enter the hotel name: "
+       hotel_name = gets.chomp
+       hotel = Hotel.find_by_name(hotel_name)
+       avg_ratings = hotel.average_rating
+       puts avg_ratings 
+       empty_lines
+       start
+   end 
+
 end 
