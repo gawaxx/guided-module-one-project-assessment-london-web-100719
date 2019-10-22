@@ -1,6 +1,10 @@
 
+require "tty-prompt"
+
 class CommandLineInterface
     def greet
+        font = TTY::Font.new(:starwars)
+        puts font.write("Tretravago")
         puts 'Welcome to Tetravago, the best resource for hotel information in the world!'
         puts "here are some options for you, type the number corresponding to the option to call it."
         puts "If you wish to exit, type 'exit' or 0"
@@ -199,7 +203,7 @@ class CommandLineInterface
    def hotel_average_rating
        puts "In order to get the average rating of a hotel, enter the hotel name: "
        hotel_name = gets.chomp
-       hotel = Hotel.find_by_name(hotel_name)
+       hotel = Hotel.find_by_name(hotel_name) #Becomes the instance that can then be called on with self in the Hotel model.
        avg_ratings = hotel.average_rating
        puts avg_ratings 
        empty_lines
