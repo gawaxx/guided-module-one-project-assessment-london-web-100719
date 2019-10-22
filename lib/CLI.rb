@@ -69,8 +69,7 @@ class CommandLineInterface
         hotel = Hotel.find_by_name(hotel_name) #This only search a hotel but doesn't do anything with it yet
         reviews = hotel.reviews #find if a review exists in review for a given hotel, this is the Active Record Shortcut 
         show_reviews(reviews) #shows the reviews that have been found.
-        empty_lines
-        start
+        end_of_method
     end 
 
     def show_reviews(reviews)
@@ -90,8 +89,7 @@ class CommandLineInterface
         user = User.find_by_name(user_name)
         reviews = user.reviews #find if a review exists in review for a given user, this is the Active Record Shortcut 
         show_reviews(reviews) #shows the reviews that have been found.
-        empty_lines
-        start 
+        end_of_method
     end 
 
     def display_user_info 
@@ -99,8 +97,7 @@ class CommandLineInterface
         user_name = gets.chomp
         user = User.find_by_name(user_name)
         puts "Name: #{user.name} Age: #{user.age} Email: #{user.email}"
-        empty_lines
-        start
+        end_of_method
     end 
 
     def display_hotel_info 
@@ -108,8 +105,7 @@ class CommandLineInterface
         hotel_name = gets.chomp
         hotel = Hotel.find_by_name(hotel_name)
         puts "Name: #{hotel.name} Email: #{hotel.email} Location: #{hotel.location} Phone Number: #{hotel.phone_number}"
-        empty_lines
-        start
+        end_of_method
     end 
 
     def create_user 
@@ -123,8 +119,7 @@ class CommandLineInterface
         email = gets.chomp 
         new_user = User.create_user(user_name, age, email)
         puts "Successfully added a new user !"
-        empty_lines
-        start
+        end_of_method
     end 
 
     def create_hotel 
@@ -141,8 +136,7 @@ class CommandLineInterface
         phone_number = gets.chomp
         new_hotel = Hotel.create_hotel(hotel_name, email, location, phone_number)
         puts "Successfully added a new hotel !"
-        empty_lines
-        start
+        end_of_method
     end 
 
     def create_review
@@ -154,8 +148,7 @@ class CommandLineInterface
         hotel = Hotel.find_by_name(hotel_name)
         if user == nil || hotel == nil 
             puts "Sorry, username or hotel input is invalid. Please make sure they exist."
-            empty_lines
-            start
+            end_of_method
         else 
             puts "Enter a title for your review"
             title = gets.chomp 
@@ -165,8 +158,7 @@ class CommandLineInterface
             rating = gets.chomp
             new_review = Review.create_review(user.id, hotel.id, title, content, rating)
             puts "Review successfully created!"
-            empty_lines
-            start 
+            end_of_method 
         end 
     end 
 
@@ -186,8 +178,7 @@ class CommandLineInterface
         new_content = gets.chomp
         review.update_content(new_content)
         puts "Review succesfully updated!"
-        empty_lines
-        start
+        end_of_method
     end 
 
     def delete_review 
@@ -196,8 +187,7 @@ class CommandLineInterface
         review = Review.find_by_title(input)
         review.delete_review
         puts "Successfully deleted the review"
-        empty_lines
-        start
+        end_of_method
     end 
 
    def hotel_average_rating
@@ -206,8 +196,12 @@ class CommandLineInterface
        hotel = Hotel.find_by_name(hotel_name) #Becomes the instance that can then be called on with self in the Hotel model.
        avg_ratings = hotel.average_rating
        puts avg_ratings 
-       empty_lines
-       start
+       end_of_method
+   end 
+
+   def end_of_method
+      empty_lines
+      start
    end 
 
 end 
