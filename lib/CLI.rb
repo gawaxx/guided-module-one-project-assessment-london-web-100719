@@ -4,7 +4,7 @@ require "tty-prompt"
 class CommandLineInterface
     def greet
         font = TTY::Font.new(:starwars)
-        puts font.write("Tretravago")
+        puts font.write("Tetravago")
         puts 'Welcome to Tetravago, the best resource for hotel information in the world!'
         puts "here are some options for you, type the number corresponding to the option to call it."
         puts "If you wish to exit, type 'exit' or 0"
@@ -107,7 +107,7 @@ class CommandLineInterface
         puts "In order to get the info of a hotel, enter the hotel name: "
         hotel_name = gets.chomp
         hotel = Hotel.find_by_name(hotel_name)
-        puts "Name: #{hotel.name} Email: #{hotel.email} Location #{hotel.location} Phone Number #{hotel.phone_number}"
+        puts "Name: #{hotel.name} Email: #{hotel.email} Location: #{hotel.location} Phone Number: #{hotel.phone_number}"
         empty_lines
         start
     end 
