@@ -237,34 +237,36 @@ class CommandLineInterface
         end 
     end 
 
-    def empty_lines 
-        puts ""
-        puts ""
-        puts ""
-        puts ""
-        puts ""
-    end 
-
     def modify_review
         puts "Enter the title of the review you wish to modify:"
         input = gets.chomp
         review = Review.find_by_title(input)
         #if that review doesn't belong to the user, stop
         #review.user.id and compare with current user.id
-        puts "Enter the new content for review ##{review.id} \n\n"
-        new_content = gets.chomp
-        review.update_content(new_content)
-        puts "Review succesfully updated!"
-        end_of_method 
+        if review.user.id == @@logged_user.id 
+            puts "Enter the new content for review ##{review.id} \n\n"
+            new_content = gets.chomp
+            review.update_content(new_content)
+            puts "Review succesfully updated!"
+            end_of_method 
+        else
+            puts "Sorry, you can't modifiy a review that is not yours!"
+            end_of_method
+        end 
     end 
 
     def delete_review 
         puts "Enter the title of the review you wish to delete:"
         input = gets.chomp
         review = Review.find_by_title(input)
-        review.delete_review
-        puts "Successfully deleted the review"
-        end_of_method
+        if review.user.id == @@logged_user.id
+            review.delete_review
+            puts "Successfully deleted the review"
+            end_of_method
+        else 
+            puts "Sorry, you can't delete a review that is not yours!"
+            end_of_method
+        end
     end 
 
     def hotel_average_rating
@@ -274,6 +276,14 @@ class CommandLineInterface
        avg_ratings = hotel.average_rating
        puts avg_ratings 
        end_of_method
+    end 
+
+    def empty_lines 
+        puts ""
+        puts ""
+        puts ""
+        puts ""
+        puts ""
     end 
 
     def end_of_method
