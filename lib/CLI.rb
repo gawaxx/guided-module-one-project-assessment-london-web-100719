@@ -6,58 +6,56 @@ class CommandLineInterface
         font = TTY::Font.new(:starwars)
         puts font.write("Tetravago")
         puts 'Welcome to Tetravago, the best resource for hotel information in the world!'
-        puts "here are some options for you, type the number corresponding to the option to call it."
-        puts "If you wish to exit, type 'exit' or 0"
-        puts "(1) Find a hotel's reviews"
-        puts "(2) Find a user's reviews"
-        puts "(3) Display information of a user"
-        puts "(4) Display information of a hotel"
-        puts "(5) Add a new user"
-        puts "(6) Add a new hotel"
-        puts "(7) Modify a review you wrote"
-        puts "(8) Delete a review you wrote"
-        puts "(9) Create a review"
-        puts "(10) Find a hotel's average rating"
-        puts "What do you wish to do?"
+        prompt = TTY::Prompt.new 
+        @@choice = prompt.select("Here are some options for you. Use the up and down arrows to select the desired option.", cycle: true, per_page: 15) do |menu|
+            menu.choice "Find a hotel's reviews", 1
+            menu.choice "Find a user's reviews", 2
+            menu.choice "Display information of a user", 3
+            menu.choice "Display information of a hotel", 4
+            menu.choice "Add a new user", 5
+            menu.choice "Add a new hotel", 6
+            menu.choice "Modify a review you wrote", 7
+            menu.choice "Delete a review you wrote", 8
+            menu.choice "Create a review", 9
+            menu.choice "Find a hotel's average rating", 10
+            menu.choice "Exit app", 0
+        end 
     end
 
     def start 
         greet 
-        choice = gets.chomp
-        if choice == "1"
+        if @@choice == 1
             empty_lines
             read_hotel_all_review
-        elsif choice == "2"
+        elsif @@choice == 2
             empty_lines
             read_user_all_review
-        elsif choice == "3"
+        elsif @@choice == 3
             empty_lines
             display_user_info
-        elsif choice == "4"
+        elsif @@choice == 4
             empty_lines
             display_hotel_info
-        elsif choice == "5"
+        elsif @@choice == 5
             empty_lines
             create_user
-        elsif choice == "6"
+        elsif @@choice == 6
             empty_lines
             create_hotel
-        elsif choice == "7"
+        elsif @@choice == 7
             empty_lines
             modify_review
-        elsif choice == "8"
+        elsif @@choice == 8
             empty_lines
             delete_review 
-        elsif choice == "9"
+        elsif @@choice == 9
             empty_lines
             create_review
-        elsif choice == "10"
+        elsif @@choice == 10
             empty_lines
             hotel_average_rating
-        elsif choice == "exit" ||  choice == "0"
+        elsif @@choice == 0
             puts "k bye"
-        else 
-            puts "You didn't want to comply and neither did I, now I am leaving."
         end 
     end 
 
