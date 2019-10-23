@@ -36,12 +36,12 @@ class CommandLineInterface
     def loginmenu
         puts "Please enter your name"
         user_name = gets.chomp
-        user = User.find_by_name(user_name)
-        name = user.name
+        @@logged_user = User.find_by_name(user_name)
+        name = @@logged_user.name
         if !User.exists?(name: name)
             puts "Sorry user does not exist, make sure you entered the username correctly."
         else
-            puts "Welcome #{user.name}."
+            puts "Welcome #{@@logged_user.name}."
             loginoptionmenu
         end
     end 
@@ -138,43 +138,6 @@ class CommandLineInterface
         create_user
     end 
 
-    #def start 
-        #greet 
-        #if @@choice == 1
-        #    empty_lines
-        #    read_hotel_all_review
-        #elsif @@choice == 2
-        #    empty_lines
-        #    read_user_all_review
-        #elsif @@choice == 3
-        #    empty_lines
-        #    display_user_info
-        #elsif @@choice == 4
-        #    empty_lines
-        #    display_hotel_info
-        #elsif @@choice == 5
-        #    empty_lines
-        #    create_user
-        #elsif @@choice == 6
-        #    empty_lines
-        #    create_hotel
-        #elsif @@choice == 7
-        #    empty_lines
-        #    modify_review
-        #elsif @@choice == 8
-        #    delete_review 
-        #    empty_lines
-        #elsif @@choice == 9
-        #    empty_lines
-        #    create_review
-        #elsif @@choice == 10
-        #    empty_lines
-        #    hotel_average_rating
-        #elsif @@choice == 0
-        #    puts "k bye"
-        #end 
-    #end 
-
     def read_hotel_all_review 
         puts "Thinking of staying somewhere but not sure if it's good? We can help you with that decision!"
         puts "Enter a hotel name to get started:"
@@ -201,7 +164,7 @@ class CommandLineInterface
         puts "Write their full name here:"
         user_name = gets.chomp 
         user = User.find_by_name(user_name)
-        reviews = user.reviews #find if a review exists in review for a given user, this is the Active Record Shortcut 
+        @@reviews = user.reviews #find if a review exists in review for a given user, this is the Active Record Shortcut 
         show_reviews(reviews) #shows the reviews that have been found.
         end_of_method
     end 
@@ -254,13 +217,12 @@ class CommandLineInterface
     end 
 
     def create_review
-        puts "Allright, first please enter your user name:"
-        user_name = gets.chomp
-        user = User.find_by_name(user_name)
-        puts "Now please eneter the name of the hotel you stayed at"
+        puts "Allright #{@@logged_user.name}, let's create that review!"
+        @@logged_user
+        puts "Now please enter the name of the hotel you stayed at"
         hotel_name = gets.chomp
         hotel = Hotel.find_by_name(hotel_name)
-        if user == nil || hotel == nil 
+        if hotel == nil 
             puts "Sorry, username or hotel input is invalid. Please make sure they exist."
             end_of_method
         else 
@@ -270,7 +232,7 @@ class CommandLineInterface
             content = gets.chomp
             puts "Please enter the rating, between 1 and 5"
             rating = gets.chomp
-            new_review = Review.create_review(user.id, hotel.id, title, content, rating)
+            new_review = Review.create_review(@@logged_user.id, hotel.id, title, content, rating)
             puts "Review successfully created!"
             end_of_method 
         end 
@@ -288,11 +250,12 @@ class CommandLineInterface
         puts "Enter the title of the review you wish to modify:"
         input = gets.chomp
         review = Review.find_by_title(input)
+        #if that review doesn't belong to the user, stop
         puts "Enter the new content for review ##{review.id} \n\n"
         new_content = gets.chomp
         review.update_content(new_content)
         puts "Review succesfully updated!"
-        end_of_method
+        end_of_method 
     end 
 
     def delete_review 
