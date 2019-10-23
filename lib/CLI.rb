@@ -2,62 +2,178 @@
 require "tty-prompt"
 
 class CommandLineInterface
+
     def greet
         font = TTY::Font.new(:starwars)
         puts font.write("Tetravago")
         puts 'Welcome to Tetravago, the best resource for hotel information in the world!'
-        prompt = TTY::Prompt.new 
-        @@choice = prompt.select("Here are some options for you. Use the up and down arrows to select the desired option.", cycle: true, per_page: 15) do |menu|
-            menu.choice "Find a hotel's reviews", 1
-            menu.choice "Find a user's reviews", 2
-            menu.choice "Display information of a user", 3
-            menu.choice "Display information of a hotel", 4
-            menu.choice "Add a new user", 5
-            menu.choice "Add a new hotel", 6
-            menu.choice "Modify a review you wrote", 7
-            menu.choice "Delete a review you wrote", 8
-            menu.choice "Create a review", 9
-            menu.choice "Find a hotel's average rating", 10
-            menu.choice "Exit app", 0
-        end 
     end
 
-    def start 
-        greet 
-        if @@choice == 1
+    def mainmenu
+        greet
+        prompt = TTY::Prompt.new
+        @@mainchoice = prompt.select("Here are some options for you. Use the up and down arrows to select the desired option.", cycle: true, per_page: 15) do |menu|
+            menu.choice "Login", 0
+            menu.choice "Sign up", 1
+            menu.choice "Continue anonymous", 2
+            menu.choice "Exit app", 3
+        end 
+
+        if @@mainchoice == 0
             empty_lines
-            read_hotel_all_review
-        elsif @@choice == 2
+            loginmenu
+        elsif @@mainchoice == 1
             empty_lines
-            read_user_all_review
-        elsif @@choice == 3
+            signupmenu
+        elsif @@mainchoice == 2
             empty_lines
-            display_user_info
-        elsif @@choice == 4
-            empty_lines
-            display_hotel_info
-        elsif @@choice == 5
-            empty_lines
-            create_user
-        elsif @@choice == 6
-            empty_lines
-            create_hotel
-        elsif @@choice == 7
-            empty_lines
-            modify_review
-        elsif @@choice == 8
-            empty_lines
-            delete_review 
-        elsif @@choice == 9
-            empty_lines
-            create_review
-        elsif @@choice == 10
-            empty_lines
-            hotel_average_rating
-        elsif @@choice == 0
-            puts "k bye"
+            nologmenu
+        elsif @@mainchoice == 3
+            puts "Allright, goodbye"
         end 
     end 
+    
+    def loginmenu
+        puts "Please enter your name"
+        user_name = gets.chomp
+        user = User.find_by_name(user_name)
+        name = user.name
+        if !User.exists?(name: name)
+            puts "Sorry user does not exist, make sure you entered the username correctly."
+        else
+            puts "Welcome #{user.name}."
+            loginoptionmenu
+        end
+    end 
+
+    def loginoptionmenu
+        prompt = TTY::Prompt.new
+        @@loginchoice = prompt.select("Here are some options for you. Use the up and down arrows to select the desired option.", cycle: true, per_page: 15) do |menu|
+            menu.choice "Find a hotel's review", 0
+            menu.choice "Find a user's review", 1
+            menu.choice "Display a user's information", 2
+            menu.choice "Display a hotel's information", 3
+            menu.choice "Find a hotel's average rating", 4
+            menu.choice "Add a new hotel", 5
+            menu.choice "Modify one of my reviews", 6
+            menu.choice "Delete one of my reviews", 7
+            menu.choice "Create a new review", 8
+            menu.choice "Go back to the main menu", 9
+            menu.choice "Exit app", 10
+        end 
+
+        if @@loginchoice == 0
+            empty_lines
+            read_hotel_all_review
+        elsif @@loginchoice == 1
+            empty_lines
+            read_user_all_review
+        elsif @@loginchoice == 2
+            empty_lines
+            display_user_info
+        elsif @@loginchoice == 3
+            empty_lines
+            display_hotel_info
+        elsif @@loginchoice == 4
+            empty_lines
+            hotel_average_rating
+        elsif @@loginchoice == 5
+            empty_lines
+            create_hotel
+        elsif @@loginchoice == 6
+            empty_lines
+            modify_review
+        elsif @@loginchoice == 7 
+            empty_lines
+            delete_review
+        elsif @@loginchoice == 8
+            empty_lines
+            create_review
+        elsif @@loginchoice == 9
+            empty_lines
+            mainmenu
+        elsif @@loginchoice == 10
+            puts "Allright, goodbye."
+        end 
+    end 
+
+    def nologmenu
+        puts "Welcome to the no log menu"
+        prompt = TTY::Prompt.new
+        @@nologinchoice = prompt.select("Here are some options for you. Use the up and down arrows to select the desired option.", cycle: true, per_page: 15) do |menu|
+            menu.choice "Find a hotel's review", 0
+            menu.choice "Find a user's review", 1
+            menu.choice "Display a user's information", 2
+            menu.choice "Display a hotel's information", 3
+            menu.choice "Find a hotel's average rating", 4
+            menu.choice "Go back to the main menu", 9
+            menu.choice "Exit app", 10
+        end
+
+        if @@nologinchoice == 0
+            empty_lines
+            read_hotel_all_review
+        elsif @@nologinchoice == 1
+            empty_lines
+            read_user_all_review
+        elsif @@nologinchoice == 2
+            empty_lines
+            display_user_info
+        elsif @@nologinchoice == 3
+            empty_lines
+            display_hotel_info
+        elsif @@nologinchoice == 4
+            empty_lines
+            hotel_average_rating
+        elsif @@nologinchoice == 9
+            empty_lines
+            mainmenu
+        elsif @@nologinchoice == 10
+            puts "Allright, goodbye."
+        end 
+    end 
+
+    def signupmenu
+        puts "You will now create a new account"
+        create_user
+    end 
+
+    #def start 
+        #greet 
+        #if @@choice == 1
+        #    empty_lines
+        #    read_hotel_all_review
+        #elsif @@choice == 2
+        #    empty_lines
+        #    read_user_all_review
+        #elsif @@choice == 3
+        #    empty_lines
+        #    display_user_info
+        #elsif @@choice == 4
+        #    empty_lines
+        #    display_hotel_info
+        #elsif @@choice == 5
+        #    empty_lines
+        #    create_user
+        #elsif @@choice == 6
+        #    empty_lines
+        #    create_hotel
+        #elsif @@choice == 7
+        #    empty_lines
+        #    modify_review
+        #elsif @@choice == 8
+        #    delete_review 
+        #    empty_lines
+        #elsif @@choice == 9
+        #    empty_lines
+        #    create_review
+        #elsif @@choice == 10
+        #    empty_lines
+        #    hotel_average_rating
+        #elsif @@choice == 0
+        #    puts "k bye"
+        #end 
+    #end 
 
     def read_hotel_all_review 
         puts "Thinking of staying somewhere but not sure if it's good? We can help you with that decision!"
@@ -117,7 +233,7 @@ class CommandLineInterface
         email = gets.chomp 
         new_user = User.create_user(user_name, age, email)
         puts "Successfully added a new user !"
-        end_of_method
+        loginoptionmenu
     end 
 
     def create_hotel 
@@ -188,18 +304,18 @@ class CommandLineInterface
         end_of_method
     end 
 
-   def hotel_average_rating
+    def hotel_average_rating
        puts "In order to get the average rating of a hotel, enter the hotel name: "
        hotel_name = gets.chomp
        hotel = Hotel.find_by_name(hotel_name) #Becomes the instance that can then be called on with self in the Hotel model.
        avg_ratings = hotel.average_rating
        puts avg_ratings 
        end_of_method
-   end 
+    end 
 
-   def end_of_method
+    def end_of_method
       empty_lines
-      start
-   end 
+      mainmenu
+    end 
 
 end 
