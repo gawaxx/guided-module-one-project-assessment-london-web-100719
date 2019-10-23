@@ -37,8 +37,7 @@ class CommandLineInterface
         puts "Please enter your name"
         user_name = gets.chomp
         @@logged_user = User.find_by_name(user_name)
-        name = @@logged_user.name
-        if !User.exists?(name: name)
+        if !@@logged_user
             puts "Sorry user does not exist, make sure you entered the username correctly."
         else
             puts "Welcome #{@@logged_user.name}."
@@ -164,7 +163,7 @@ class CommandLineInterface
         puts "Write their full name here:"
         user_name = gets.chomp 
         user = User.find_by_name(user_name)
-        @@reviews = user.reviews #find if a review exists in review for a given user, this is the Active Record Shortcut 
+        reviews = user.reviews #find if a review exists in review for a given user, this is the Active Record Shortcut 
         show_reviews(reviews) #shows the reviews that have been found.
         end_of_method
     end 
@@ -251,6 +250,7 @@ class CommandLineInterface
         input = gets.chomp
         review = Review.find_by_title(input)
         #if that review doesn't belong to the user, stop
+        #review.user.id and compare with current user.id
         puts "Enter the new content for review ##{review.id} \n\n"
         new_content = gets.chomp
         review.update_content(new_content)
