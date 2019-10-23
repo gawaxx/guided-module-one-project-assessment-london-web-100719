@@ -3,6 +3,14 @@ require "tty-prompt"
 
 class CommandLineInterface
 
+    def initialize
+        @@menu = []
+    end 
+
+    def self.menu_selected
+        @@menu = []
+    end 
+
     def greet
         font = TTY::Font.new(:starwars)
         puts font.write("Tetravago")
@@ -22,12 +30,16 @@ class CommandLineInterface
         if @@mainchoice == 0
             empty_lines
             loginmenu
+            @@menu = []
+            @@menu.push(loginoptionmenu)
         elsif @@mainchoice == 1
             empty_lines
             signupmenu
         elsif @@mainchoice == 2
             empty_lines
             nologmenu
+            @@menu = []
+            @@menu << nologmenu
         elsif @@mainchoice == 3
             puts "Allright, goodbye"
         end 
@@ -288,7 +300,7 @@ class CommandLineInterface
 
     def end_of_method
       empty_lines
-      mainmenu
+      @@menu[0]
     end 
 
 end 
