@@ -49,10 +49,12 @@ class CommandLineInterface
     end 
     
     def loginmenu
-        puts "Please enter your name"
+        puts "Please enter your name, or enter 'exit' to go back"
         user_name = gets.chomp
         @@logged_user = User.find_by_name(user_name)
-        if !@@logged_user
+        if user_name == "exit"
+            mainmenu
+        elsif !@@logged_user
             puts "Sorry user does not exist, make sure you entered the username correctly."
             loginmenu
         else
