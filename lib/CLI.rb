@@ -214,19 +214,33 @@ class CommandLineInterface
     end 
 
     def display_user_info 
-        puts "In order to get the info of a user, enter their username: "
+        puts "In order to get the info of a user, enter their username, or type 'exit' to exit: "
         user_name = gets.chomp
         user = User.find_by_name(user_name)
-        puts "Name: #{user.name} Age: #{user.age} Email: #{user.email}"
-        end_of_method
+        if user_name == "exit"
+            @@menu 
+        elsif user != nil 
+            puts "Name: #{user.name} Age: #{user.age} Email: #{user.email}"
+            end_of_method
+        else
+            puts "Username is invalid. Try again"
+            display_user_info
+        end 
     end 
 
     def display_hotel_info 
-        puts "In order to get the info of a hotel, enter the hotel name: "
+        puts "In order to get the info of a hotel, enter the hotel name, or type 'exit' to exit: "
         hotel_name = gets.chomp
         hotel = Hotel.find_by_name(hotel_name)
-        puts "Name: #{hotel.name} Email: #{hotel.email} Location: #{hotel.location} Phone Number: #{hotel.phone_number}"
-        end_of_method
+        if hotel_name == "exit"
+            @@menu
+        elsif hotel != nil
+            puts "Name: #{hotel.name} Email: #{hotel.email} Location: #{hotel.location} Phone Number: #{hotel.phone_number}"
+            end_of_method
+        else 
+            puts "Hotel name invalid. Try again"
+            display_hotel_info
+        end 
     end 
 
     def create_user 
