@@ -3,22 +3,24 @@ require "tty-prompt"
 
 class CommandLineInterface
 
-    @@menu = []
-
     def initialize
-        @@menu = []
+        @@menu = ()
         @@loginchoice = ()
         @@nologinchoice = ()
-    end 
-
-    def self.menu
-        @@menu
     end 
 
     def greet
         font = TTY::Font.new(:starwars)
         puts font.write("Tetravago")
         puts 'Welcome to Tetravago, the best resource for hotel information in the world!'
+    end
+
+    def chosen_menu
+        if @@menu == "loginoptionmenu"
+            loginoptionmenu
+        elsif @@menu == "nologmenu"
+            nologmenu
+        end
     end
 
     def mainmenu
@@ -33,25 +35,25 @@ class CommandLineInterface
             menu.choice "Exit app", 3
         end 
 
-        @@menu.clear
+        #@@menu.clear
 
         if mainchoice == 0
             empty_lines
+            @@menu = "loginoptionmenu"
             loginmenu
-            @@menu.clear
-            @@menu.push(loginoptionmenu)
         elsif mainchoice == 1
             empty_lines
             signupmenu
         elsif mainchoice == 2
             empty_lines
+            @@menu = "nologmenu"
             nologmenu
-            @@menu.clear
-            @@menu << nologmenu
         elsif mainchoice == 3
             puts "Allright, goodbye" #add detonate timer bla bla bla TETRAVAGO, please come back later!
             exit 
         end 
+        #binding.pry
+        #p 0
     end 
     
     def loginmenu
@@ -64,7 +66,7 @@ class CommandLineInterface
             puts "Sorry user does not exist, make sure you entered the username correctly."
             loginmenu
         else
-            puts "Welcome #{@@logged_user.name}. \n\n"
+            puts "Welcome #{@@logged_user.name}. \n\n" 
             loginoptionmenu
         end
     end 
@@ -172,7 +174,7 @@ class CommandLineInterface
             end_of_method
         else 
             puts "Sorry, hotel doesn't exists. Make sure you spelled it correctly \n\n"
-            read_hotel_all_review
+            chosen_menu
         end 
     end 
 
@@ -199,7 +201,7 @@ class CommandLineInterface
             end_of_method
         else 
             puts "Sorry, user does not exists. Make sure you spelled it correctly. \n\n"
-            read_user_all_review
+            chosen_menu
         end 
     end 
 
@@ -208,7 +210,7 @@ class CommandLineInterface
         user_name = gets.chomp
         user = User.find_by_name(user_name)
         if user_name == "exit"
-            @@menu 
+            chosen_menu
         elsif user != nil 
             puts "Name: #{user.name} Age: #{user.age} Email: #{user.email}"
             end_of_method
@@ -223,13 +225,13 @@ class CommandLineInterface
         hotel_name = get_hotel_name
         hotel = Hotel.find_by_name(hotel_name)
         if hotel_name == "exit"
-            @@menu
+            chosen_menu
         elsif hotel != nil
             puts "Name: #{hotel.name} Email: #{hotel.email} Location: #{hotel.location} Phone Number: #{hotel.phone_number}"
             end_of_method
         else 
             puts "Hotel name invalid."
-            @@menu
+            chosen_menu
         end 
     end 
 
@@ -356,7 +358,8 @@ class CommandLineInterface
 
     def end_of_method
       empty_lines
-      @@menu
+      chosen_menu
+      #binding.pry
     end 
 
 end 
