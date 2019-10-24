@@ -1,4 +1,3 @@
-
 require "tty-prompt"
 
 class CommandLineInterface
@@ -52,8 +51,6 @@ class CommandLineInterface
             puts "Allright, goodbye" #add detonate timer bla bla bla TETRAVAGO, please come back later!
             exit 
         end 
-        #binding.pry
-        #p 0
     end 
     
     def loginmenu
@@ -247,7 +244,8 @@ class CommandLineInterface
         email = gets.chomp 
         new_user = User.create_user(user_name, age, email)
         puts "Successfully added a new user !"
-        loginoptionmenu
+        @@menu = "loginoptionmenu"
+        chosen_menu
     end 
 
     def create_hotel 
