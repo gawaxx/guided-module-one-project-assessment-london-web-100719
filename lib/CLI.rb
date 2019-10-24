@@ -31,6 +31,8 @@ class CommandLineInterface
             menu.choice "Exit app", 3
         end 
 
+        @@menu.clear
+
         if mainchoice == 0
             empty_lines
             loginmenu
@@ -171,11 +173,10 @@ class CommandLineInterface
         puts "Enter a hotel name to get started or enter 'exit' to go back:"
         hotel_name = gets.chomp
         puts "You are now looking at reviews for #{hotel_name} hotel"
+        hotel = Hotel.find_by_name(hotel_name) #This only search a hotel but doesn't do anything with it yet
         if hotel_name == "exit"
             end_of_method
-        elsif !hotel_name == true
-            #binding.pry
-            hotel = Hotel.find_by_name(hotel_name) #This only search a hotel but doesn't do anything with it yet
+        elsif hotel != nil
             reviews = hotel.reviews #find if a review exists in review for a given hotel, this is the Active Record Shortcut 
             show_reviews(reviews) #shows the reviews that have been found.
             end_of_method
@@ -199,10 +200,10 @@ class CommandLineInterface
         puts "Curious about the review's someone wrote?"
         puts "Write their full name here or enter 'exit' to go back:"
         user_name = gets.chomp 
+        user = User.find_by_name(user_name)
         if user_name == "exit"
             end_of_method
-        elsif !user_name == true 
-            user = User.find_by_name(user_name)
+        elsif user != nil 
             reviews = user.reviews #find if a review exists in review for a given user, this is the Active Record Shortcut 
             show_reviews(reviews) #shows the reviews that have been found.
             end_of_method
