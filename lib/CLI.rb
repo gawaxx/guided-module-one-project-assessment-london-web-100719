@@ -263,7 +263,7 @@ class CommandLineInterface
     end 
 
     def modify_review
-        puts "Enter the title of the review you wish to modify:"
+        puts "Enter the title of the review you wish to modify or type 'exit' to go back:"
         input = gets.chomp
         review = Review.find_by_title(input)
         if review !=nil #check if review instance exists
@@ -280,22 +280,29 @@ class CommandLineInterface
         elsif input == "exit"
             loginoptionmenu
         else 
-            puts "Sorry, you do not have any reviews with that title! Try again. Or type 'exit' to go back to the menu."
+            puts "Sorry, you do not have any reviews with that title! Try again."
             modify_review
         end 
     end 
 
     def delete_review 
-        puts "Enter the title of the review you wish to delete:"
+        puts "Enter the title of the review you wish to delete or type 'exit' to go back:"
         input = gets.chomp
         review = Review.find_by_title(input)
-        if review.user.id == @@logged_user.id
-            review.delete_review
-            puts "Successfully deleted the review"
-            end_of_method
+        if review !=nil #check if review instance exists
+            if review.user.id == @@logged_user.id
+                review.delete_review
+                puts "Successfully deleted the review"
+                end_of_method
+            else 
+                puts "Sorry, you can't delete a review that is not yours!"
+                end_of_method
+            end
+        elsif input == "exit"
+            loginoptionmenu
         else 
-            puts "Sorry, you can't delete a review that is not yours!"
-            end_of_method
+            puts "Sorry, you do not have any reviews with that title! Try again."
+            delete_review
         end
     end 
 
