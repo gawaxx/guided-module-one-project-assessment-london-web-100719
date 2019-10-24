@@ -1,3 +1,5 @@
+require 'pry'
+
 class Hotel < ActiveRecord::Base
 #This is the hotel class 
     has_many :reviews 
@@ -25,6 +27,10 @@ class Hotel < ActiveRecord::Base
         else 
             "Sorry no reviews exists for this hotel, create one if you wish!"
         end 
+    end
+
+    def self.find_all
+        Hotel.all #refers to the hotel table in database
     end
 
 end 
