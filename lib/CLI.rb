@@ -155,7 +155,7 @@ class CommandLineInterface
     end 
     
     def get_hotel_name
-        gets.chomp.downcase.capitalize
+        gets.chomp.downcase.split.map(&:capitalize).join(' ')
     end 
 
     def read_hotel_all_review 
