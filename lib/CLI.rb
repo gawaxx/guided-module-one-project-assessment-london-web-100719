@@ -22,27 +22,27 @@ class CommandLineInterface
     def mainmenu
         greet
         prompt = TTY::Prompt.new
-        @@mainchoice = prompt.select("Here are some options for you. Use the up and down arrows to select the desired option.", cycle: true, per_page: 15) do |menu|
+        mainchoice = prompt.select("Here are some options for you. Use the up and down arrows to select the desired option.", cycle: true, per_page: 15) do |menu|
             menu.choice "Login", 0
             menu.choice "Sign up", 1
             menu.choice "Continue anonymous", 2
             menu.choice "Exit app", 3
         end 
 
-        if @@mainchoice == 0
+        if mainchoice == 0
             empty_lines
             loginmenu
-            @@menu = []
+            @@menu.clear
             @@menu.push(loginoptionmenu)
-        elsif @@mainchoice == 1
+        elsif mainchoice == 1
             empty_lines
             signupmenu
-        elsif @@mainchoice == 2
+        elsif mainchoice == 2
             empty_lines
             nologmenu
-            @@menu = []
+            @@menu.clear
             @@menu << nologmenu
-        elsif @@mainchoice == 3
+        elsif mainchoice == 3
             puts "Allright, goodbye" #add detonate timer bla bla bla TETRAVAGO, please come back later!
             exit 
         end 
@@ -63,7 +63,7 @@ class CommandLineInterface
 
     def loginoptionmenu
         prompt = TTY::Prompt.new
-        @@loginchoice = prompt.select("Here are some options for you. Use the up and down arrows to select the desired option.", cycle: true, per_page: 15) do |menu|
+        loginchoice = prompt.select("Here are some options for you. Use the up and down arrows to select the desired option.", cycle: true, per_page: 15) do |menu|
             menu.choice "Find a hotel's review", 0
             menu.choice "Find a user's review", 1
             menu.choice "Display a user's information", 2
@@ -78,40 +78,40 @@ class CommandLineInterface
             menu.choice "Exit app", 10
         end 
 
-        if @@loginchoice == 0
+        if loginchoice == 0
             empty_lines
             read_hotel_all_review
-        elsif @@loginchoice == 1
+        elsif loginchoice == 1
             empty_lines
             read_user_all_review
-        elsif @@loginchoice == 2
+        elsif loginchoice == 2
             empty_lines
             display_user_info
-        elsif @@loginchoice == 3
+        elsif loginchoice == 3
             empty_lines
             display_hotel_info
-        elsif @@loginchoice == 4
+        elsif loginchoice == 4
             empty_lines
             hotel_average_rating
-        elsif @@loginchoice == 5
+        elsif loginchoice == 5
             empty_lines
             create_hotel
-        elsif @@loginchoice == 6
+        elsif loginchoice == 6
             empty_lines
             modify_review
-        elsif @@loginchoice == 7 
+        elsif loginchoice == 7 
             empty_lines
             delete_review
-        elsif @@loginchoice == 8
+        elsif loginchoice == 8
             empty_lines
             create_review
-        elsif @@loginchoice == 9
+        elsif loginchoice == 9
             empty_lines
             mainmenu
-        elsif @@loginchoice == 10
+        elsif loginchoice == 10
             puts "Allright, goodbye."
             exit
-        elsif @@loginchoice == 11
+        elsif loginchoice == 11
             empty_lines
             most_popular_hotel
         end 
@@ -120,7 +120,7 @@ class CommandLineInterface
     def nologmenu
         puts "Welcome to the no log menu"
         prompt = TTY::Prompt.new
-        @@nologinchoice = prompt.select("Here are some options for you. Use the up and down arrows to select the desired option.", cycle: true, per_page: 15) do |menu|
+        nologinchoice = prompt.select("Here are some options for you. Use the up and down arrows to select the desired option.", cycle: true, per_page: 15) do |menu|
             menu.choice "Find a hotel's review", 0
             menu.choice "Find a user's review", 1
             menu.choice "Display a user's information", 2
@@ -131,27 +131,27 @@ class CommandLineInterface
             menu.choice "Exit app", 10
         end
 
-        if @@nologinchoice == 0
+        if nologinchoice == 0
             empty_lines
             read_hotel_all_review
-        elsif @@nologinchoice == 1
+        elsif nologinchoice == 1
             empty_lines
             read_user_all_review
-        elsif @@nologinchoice == 2
+        elsif nologinchoice == 2
             empty_lines
             display_user_info
-        elsif @@nologinchoice == 3
+        elsif nologinchoice == 3
             empty_lines
             display_hotel_info
-        elsif @@nologinchoice == 4
+        elsif nologinchoice == 4
             empty_lines
             hotel_average_rating
-        elsif @@nologinchoice == 9
+        elsif nologinchoice == 9
             empty_lines
             mainmenu
-        elsif @@nologinchoice == 10
+        elsif nologinchoice == 10
             puts "Allright, goodbye."
-        elsif @@nologinchoice == 11
+        elsif nologinchoice == 11
             empty_lines
             most_popular_hotel
         end 
