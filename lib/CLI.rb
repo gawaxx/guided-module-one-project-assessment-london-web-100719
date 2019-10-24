@@ -22,7 +22,7 @@ class CommandLineInterface
     def mainmenu
         system 'clear'
         greet
-        5.times do puts "\n" end
+        empty_lines
         prompt = TTY::Prompt.new
         mainchoice = prompt.select("Here are some options for you. Use the up and down arrows to select the desired option.", cycle: true, per_page: 15) do |menu|
             menu.choice "Login", 0
@@ -167,11 +167,15 @@ class CommandLineInterface
         puts "You will now create a new account"
         create_user
     end 
+    
+    def get_hotel_name
+        gets.chomp.downcase.capitalize
+    end 
 
     def read_hotel_all_review 
         puts "Thinking of staying somewhere but not sure if it's good? We can help you with that decision!"
         puts "Enter a hotel name to get started or enter 'exit' to go back:"
-        hotel_name = gets.chomp
+        hotel_name = get_hotel_name
         puts "You are now looking at reviews for #{hotel_name} hotel"
         hotel = Hotel.find_by_name(hotel_name) #This only search a hotel but doesn't do anything with it yet
         if hotel_name == "exit"
@@ -230,7 +234,7 @@ class CommandLineInterface
 
     def display_hotel_info 
         puts "In order to get the info of a hotel, enter the hotel name, or type 'exit' to exit: "
-        hotel_name = gets.chomp
+        hotel_name = get_hotel_name
         hotel = Hotel.find_by_name(hotel_name)
         if hotel_name == "exit"
             @@menu
@@ -260,7 +264,7 @@ class CommandLineInterface
 
     def create_hotel 
         puts "Enter new hotel's name"
-        hotel_name = gets.chomp 
+        hotel_name = get_hotel_name
         puts ""
         puts "Enter the hotel's email \n\n"
         email = gets.chomp
@@ -279,7 +283,7 @@ class CommandLineInterface
         puts "Allright #{@@logged_user.name}, let's create that review!"
         @@logged_user
         puts "Now please enter the name of the hotel you stayed at"
-        hotel_name = gets.chomp
+        hotel_name = get_hotel_name
         hotel = Hotel.find_by_name(hotel_name)
         if hotel == nil 
             puts "Sorry, username or hotel input is invalid. Please make sure they exist."
@@ -343,7 +347,7 @@ class CommandLineInterface
 
     def hotel_average_rating
        puts "In order to get the average rating of a hotel, enter the hotel name: "
-       hotel_name = gets.chomp
+       hotel_name = get_hotel_name
        hotel = Hotel.find_by_name(hotel_name) #Becomes the instance that can then be called on with self in the Hotel model.
        avg_ratings = hotel.average_rating
        puts avg_ratings 
@@ -356,17 +360,12 @@ class CommandLineInterface
         all_hotels.each do |h| 
             all_h_avg[ "#{h.name}" ] = h.average_rating.to_i
         end 
-        #binding.pry
         puts all_h_avg.sort_by{|hotel, avg_r| avg_r}.last
         end_of_method
     end 
 
     def empty_lines 
-        puts ""
-        puts ""
-        puts ""
-        puts ""
-        puts ""
+        5.times do puts "\n" end
     end 
 
     def end_of_method
