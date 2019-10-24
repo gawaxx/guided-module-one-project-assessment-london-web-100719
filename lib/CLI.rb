@@ -168,11 +168,11 @@ class CommandLineInterface
 
     def read_hotel_all_review 
         puts "Thinking of staying somewhere but not sure if it's good? We can help you with that decision!"
-        puts "Enter a hotel name to get started or press exit to go back:"
+        puts "Enter a hotel name to get started or enter 'exit' to go back:"
         hotel_name = gets.chomp
         puts "You are now looking at reviews for #{hotel_name} hotel"
         if hotel_name == "exit"
-            mainmenu
+            end_of_method
         elsif !hotel_name == true
             #binding.pry
             hotel = Hotel.find_by_name(hotel_name) #This only search a hotel but doesn't do anything with it yet
@@ -180,7 +180,7 @@ class CommandLineInterface
             show_reviews(reviews) #shows the reviews that have been found.
             end_of_method
         else 
-            puts "Sorry, hotel doesn't exists. make sure you spelled it correctly \n\n"
+            puts "Sorry, hotel doesn't exists. Make sure you spelled it correctly \n\n"
             read_hotel_all_review
         end 
     end 
@@ -197,12 +197,19 @@ class CommandLineInterface
 
     def read_user_all_review
         puts "Curious about the review's someone wrote?"
-        puts "Write their full name here:"
+        puts "Write their full name here or enter 'exit' to go back:"
         user_name = gets.chomp 
-        user = User.find_by_name(user_name)
-        reviews = user.reviews #find if a review exists in review for a given user, this is the Active Record Shortcut 
-        show_reviews(reviews) #shows the reviews that have been found.
-        end_of_method
+        if user_name == "exit"
+            end_of_method
+        elsif !user_name == true 
+            user = User.find_by_name(user_name)
+            reviews = user.reviews #find if a review exists in review for a given user, this is the Active Record Shortcut 
+            show_reviews(reviews) #shows the reviews that have been found.
+            end_of_method
+        else 
+            puts "Sorry, user does not exists. Make sure you spelled it correctly. \n\n"
+            read_user_all_review
+        end 
     end 
 
     def display_user_info 
