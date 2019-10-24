@@ -7,6 +7,8 @@ class CommandLineInterface
 
     def initialize
         @@menu = []
+        @@loginchoice = ()
+        @@nologinchoice = ()
     end 
 
     def self.menu
@@ -69,7 +71,7 @@ class CommandLineInterface
 
     def loginoptionmenu
         prompt = TTY::Prompt.new
-        loginchoice = prompt.select("Here are some options for you. Use the up and down arrows to select the desired option.", cycle: true, per_page: 15) do |menu|
+        @@loginchoice = prompt.select("Here are some options for you. Use the up and down arrows to select the desired option.", cycle: true, per_page: 15) do |menu|
             menu.choice "Find a hotel's review", 0
             menu.choice "Find a user's review", 1
             menu.choice "Display a user's information", 2
@@ -84,49 +86,56 @@ class CommandLineInterface
             menu.choice "Exit app", 10
         end 
 
-        if loginchoice == 0
+        shared_options
+    end 
+
+    def shared_options
+        if @@nologinchoice == 0 || @@loginchoice == 0
             empty_lines
             read_hotel_all_review
-        elsif loginchoice == 1
+        elsif @@nologinchoice == 1 || @@loginchoice == 1
             empty_lines
             read_user_all_review
-        elsif loginchoice == 2
+        elsif @@nologinchoice == 2 || @@loginchoice == 2
             empty_lines
             display_user_info
-        elsif loginchoice == 3
+        elsif @@nologinchoice == 3 || @@loginchoice == 3
             empty_lines
             display_hotel_info
-        elsif loginchoice == 4
+        elsif @@nologinchoice == 4 || @@loginchoice == 4
             empty_lines
             hotel_average_rating
-        elsif loginchoice == 5
-            empty_lines
-            create_hotel
-        elsif loginchoice == 6
-            empty_lines
-            modify_review
-        elsif loginchoice == 7 
-            empty_lines
-            delete_review
-        elsif loginchoice == 8
-            empty_lines
-            create_review
-        elsif loginchoice == 9
+        elsif @@nologinchoice == 9 || @@loginchoice == 9
             empty_lines
             mainmenu
-        elsif loginchoice == 10
+        elsif @@nologinchoice == 10 || @@loginchoice == 10
             puts "Allright, goodbye."
-            exit
-        elsif loginchoice == 11
+            exit 
+        elsif @@nologinchoice == 11 || @@loginchoice == 11
             empty_lines
             most_popular_hotel
-        end 
+        elsif @@loginchoice == 5
+            empty_lines
+            create_hotel
+        elsif @@loginchoice == 6
+            empty_lines
+            modify_review
+        elsif @@loginchoice == 7 
+            empty_lines
+            delete_review
+        elsif @@loginchoice == 8
+            empty_lines
+            create_review
+        elsif @@loginchoice == 9
+            empty_lines
+            mainmenu
+        end
     end 
 
     def nologmenu
         puts "Welcome to the no log menu"
         prompt = TTY::Prompt.new
-        nologinchoice = prompt.select("Here are some options for you. Use the up and down arrows to select the desired option.", cycle: true, per_page: 15) do |menu|
+        @@nologinchoice = prompt.select("Here are some options for you. Use the up and down arrows to select the desired option.", cycle: true, per_page: 15) do |menu|
             menu.choice "Find a hotel's review", 0
             menu.choice "Find a user's review", 1
             menu.choice "Display a user's information", 2
@@ -137,30 +146,7 @@ class CommandLineInterface
             menu.choice "Exit app", 10
         end
 
-        if nologinchoice == 0
-            empty_lines
-            read_hotel_all_review
-        elsif nologinchoice == 1
-            empty_lines
-            read_user_all_review
-        elsif nologinchoice == 2
-            empty_lines
-            display_user_info
-        elsif nologinchoice == 3
-            empty_lines
-            display_hotel_info
-        elsif nologinchoice == 4
-            empty_lines
-            hotel_average_rating
-        elsif nologinchoice == 9
-            empty_lines
-            mainmenu
-        elsif nologinchoice == 10
-            puts "Allright, goodbye."
-        elsif nologinchoice == 11
-            empty_lines
-            most_popular_hotel
-        end 
+        shared_options
     end 
 
     def signupmenu
@@ -242,8 +228,8 @@ class CommandLineInterface
             puts "Name: #{hotel.name} Email: #{hotel.email} Location: #{hotel.location} Phone Number: #{hotel.phone_number}"
             end_of_method
         else 
-            puts "Hotel name invalid. Try again"
-            display_hotel_info
+            puts "Hotel name invalid."
+            @@menu
         end 
     end 
 
@@ -286,7 +272,7 @@ class CommandLineInterface
         hotel_name = get_hotel_name
         hotel = Hotel.find_by_name(hotel_name)
         if hotel == nil 
-            puts "Sorry, username or hotel input is invalid. Please make sure they exist."
+            puts "Sorry, hotel input is invalid. Please make sure it exists."
             end_of_method
         else 
             puts "Enter a title for your review \n\n"
