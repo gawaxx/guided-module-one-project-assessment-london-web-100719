@@ -346,6 +346,7 @@ class CommandLineInterface
         all_hotels.each do |h| 
             all_h_avg[ "#{h.name}" ] = h.average_rating.to_i
         end 
+        puts "Our best rated hotel is:"
         puts all_h_avg.sort_by{|hotel, avg_r| avg_r}.last
         end_of_method
     end 
@@ -357,7 +358,6 @@ class CommandLineInterface
     def end_of_method
       empty_lines
       chosen_menu
-      #binding.pry
     end 
 
 end 
