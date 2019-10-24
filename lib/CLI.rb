@@ -214,7 +214,8 @@ class CommandLineInterface
         user_name = gets.chomp 
         puts ""
         puts "Enter your age"
-        age = gets.chomp 
+        age = gets.chomp
+        age = age.to_i 
         puts ""
         puts "Enter your email"
         email = gets.chomp 
