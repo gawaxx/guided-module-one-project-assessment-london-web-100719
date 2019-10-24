@@ -3,12 +3,14 @@ require "tty-prompt"
 
 class CommandLineInterface
 
+    @@menu = []
+
     def initialize
         @@menu = []
     end 
 
-    def self.menu_selected
-        @@menu = []
+    def self.menu
+        @@menu
     end 
 
     def greet
@@ -41,7 +43,8 @@ class CommandLineInterface
             @@menu = []
             @@menu << nologmenu
         elsif @@mainchoice == 3
-            puts "Allright, goodbye"
+            puts "Allright, goodbye" #add detonate timer bla bla bla TETRAVAGO, please come back later!
+            exit 
         end 
     end 
     
@@ -51,6 +54,7 @@ class CommandLineInterface
         @@logged_user = User.find_by_name(user_name)
         if !@@logged_user
             puts "Sorry user does not exist, make sure you entered the username correctly."
+            loginmenu
         else
             puts "Welcome #{@@logged_user.name}."
             loginoptionmenu
@@ -65,6 +69,7 @@ class CommandLineInterface
             menu.choice "Display a user's information", 2
             menu.choice "Display a hotel's information", 3
             menu.choice "Find a hotel's average rating", 4
+            menu.choice "Find the best rated hotel!", 11
             menu.choice "Add a new hotel", 5
             menu.choice "Modify one of my reviews", 6
             menu.choice "Delete one of my reviews", 7
@@ -105,6 +110,10 @@ class CommandLineInterface
             mainmenu
         elsif @@loginchoice == 10
             puts "Allright, goodbye."
+            exit
+        elsif @@loginchoice == 11
+            empty_lines
+            most_popular_hotel
         end 
     end 
 
@@ -117,6 +126,7 @@ class CommandLineInterface
             menu.choice "Display a user's information", 2
             menu.choice "Display a hotel's information", 3
             menu.choice "Find a hotel's average rating", 4
+            menu.choice "Find the best rated hotel!", 11
             menu.choice "Go back to the main menu", 9
             menu.choice "Exit app", 10
         end
@@ -141,6 +151,9 @@ class CommandLineInterface
             mainmenu
         elsif @@nologinchoice == 10
             puts "Allright, goodbye."
+        elsif @@nologinchoice == 11
+            empty_lines
+            most_popular_hotel
         end 
     end 
 
@@ -290,6 +303,17 @@ class CommandLineInterface
        end_of_method
     end 
 
+    def most_popular_hotel
+        all_hotels = Hotel.find_all #finds all hotel instances
+        all_h_avg = {} 
+        all_hotels.each do |h| 
+            all_h_avg[ "#{h.name}" ] = h.average_rating
+        end 
+        #binding.pry
+        puts all_h_avg.sort_by{|hotel, avg_r| avg_r}.last
+        end_of_method
+    end 
+
     def empty_lines 
         puts ""
         puts ""
@@ -300,7 +324,7 @@ class CommandLineInterface
 
     def end_of_method
       empty_lines
-      @@menu[0]
+      @@menu
     end 
 
 end 
