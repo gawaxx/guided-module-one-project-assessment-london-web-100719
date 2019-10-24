@@ -20,7 +20,9 @@ class CommandLineInterface
     end
 
     def mainmenu
+        system 'clear'
         greet
+        5.times do puts "\n" end
         prompt = TTY::Prompt.new
         mainchoice = prompt.select("Here are some options for you. Use the up and down arrows to select the desired option.", cycle: true, per_page: 15) do |menu|
             menu.choice "Login", 0
@@ -49,7 +51,7 @@ class CommandLineInterface
     end 
     
     def loginmenu
-        puts "Please enter your name, or enter 'exit' to go back"
+        puts "Please enter your name, or enter 'exit' to go back \n\n"
         user_name = gets.chomp
         @@logged_user = User.find_by_name(user_name)
         if user_name == "exit"
@@ -58,7 +60,7 @@ class CommandLineInterface
             puts "Sorry user does not exist, make sure you entered the username correctly."
             loginmenu
         else
-            puts "Welcome #{@@logged_user.name}."
+            puts "Welcome #{@@logged_user.name}. \n\n"
             loginoptionmenu
         end
     end 
@@ -166,13 +168,21 @@ class CommandLineInterface
 
     def read_hotel_all_review 
         puts "Thinking of staying somewhere but not sure if it's good? We can help you with that decision!"
-        puts "Enter a hotel name to get started:"
+        puts "Enter a hotel name to get started or press exit to go back:"
         hotel_name = gets.chomp
         puts "You are now looking at reviews for #{hotel_name} hotel"
-        hotel = Hotel.find_by_name(hotel_name) #This only search a hotel but doesn't do anything with it yet
-        reviews = hotel.reviews #find if a review exists in review for a given hotel, this is the Active Record Shortcut 
-        show_reviews(reviews) #shows the reviews that have been found.
-        end_of_method
+        if hotel_name == "exit"
+            mainmenu
+        elsif !hotel_name == true
+            #binding.pry
+            hotel = Hotel.find_by_name(hotel_name) #This only search a hotel but doesn't do anything with it yet
+            reviews = hotel.reviews #find if a review exists in review for a given hotel, this is the Active Record Shortcut 
+            show_reviews(reviews) #shows the reviews that have been found.
+            end_of_method
+        else 
+            puts "Sorry, hotel doesn't exists. make sure you spelled it correctly \n\n"
+            read_hotel_all_review
+        end 
     end 
 
     def show_reviews(reviews)
@@ -230,16 +240,16 @@ class CommandLineInterface
         puts "Enter new hotel's name"
         hotel_name = gets.chomp 
         puts ""
-        puts "Enter the hotel's email"
-        puts ""
+        puts "Enter the hotel's email \n\n"
         email = gets.chomp
-        puts "Enter the hotel's address"
+        puts ""
+        puts "Enter the hotel's address \n\n"
         location = gets.chomp 
         puts ""
-        puts "Enter the hotel's phone number"
+        puts "Enter the hotel's phone number \n\n"
         phone_number = gets.chomp
         new_hotel = Hotel.create_hotel(hotel_name, email, location, phone_number)
-        puts "Successfully added a new hotel !"
+        puts "Successfully added a new hotel ! \n\n"
         end_of_method
     end 
 
@@ -253,14 +263,14 @@ class CommandLineInterface
             puts "Sorry, username or hotel input is invalid. Please make sure they exist."
             end_of_method
         else 
-            puts "Enter a title for your review"
+            puts "Enter a title for your review \n\n"
             title = gets.chomp 
-            puts "Enter the content of your review"
+            puts "Enter the content of your review \n\n"
             content = gets.chomp
-            puts "Please enter the rating, between 1 and 5"
+            puts "Please enter the rating, between 1 and 5 \n\n"
             rating = gets.chomp
             new_review = Review.create_review(@@logged_user.id, hotel.id, title, content, rating)
-            puts "Review successfully created!"
+            puts "Review successfully created! \n\n"
             end_of_method 
         end 
     end 
@@ -322,7 +332,7 @@ class CommandLineInterface
         all_hotels = Hotel.find_all #finds all hotel instances
         all_h_avg = {} 
         all_hotels.each do |h| 
-            all_h_avg[ "#{h.name}" ] = h.average_rating
+            all_h_avg[ "#{h.name}" ] = h.average_rating.to_i
         end 
         #binding.pry
         puts all_h_avg.sort_by{|hotel, avg_r| avg_r}.last

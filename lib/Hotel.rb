@@ -20,7 +20,7 @@ class Hotel < ActiveRecord::Base
     def average_rating
         # summ of all reviews ratings that belong to an hotel divided by total amout of reviews
         sum = 0
-        self.reviews.each {|r| sum += r.rating}
+        self.reviews.each {|r| sum += r.rating.to_i}
         review_size = self.reviews.size
         if review_size > 0
             sum / review_size
