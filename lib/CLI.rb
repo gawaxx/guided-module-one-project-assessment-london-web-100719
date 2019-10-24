@@ -266,17 +266,22 @@ class CommandLineInterface
         puts "Enter the title of the review you wish to modify:"
         input = gets.chomp
         review = Review.find_by_title(input)
-        #if that review doesn't belong to the user, stop
-        #review.user.id and compare with current user.id
-        if review.user.id == @@logged_user.id 
-            puts "Enter the new content for review ##{review.id} \n\n"
-            new_content = gets.chomp
-            review.update_content(new_content)
-            puts "Review succesfully updated!"
-            end_of_method 
-        else
-            puts "Sorry, you can't modifiy a review that is not yours!"
-            end_of_method
+        if review !=nil #check if review instance exists
+            if review.user.id == @@logged_user.id #check if the user who wrote it and the logged in user are the same.
+                puts "Enter the new content for review ##{review.id} \n\n"
+                new_content = gets.chomp
+                review.update_content(new_content)
+                puts "Review succesfully updated!"
+                end_of_method 
+            else
+                puts "Sorry, you can't modifiy a review that is not yours!"
+                end_of_method
+            end 
+        elsif input == "exit"
+            loginoptionmenu
+        else 
+            puts "Sorry, you do not have any reviews with that title! Try again. Or type 'exit' to go back to the menu."
+            modify_review
         end 
     end 
 
