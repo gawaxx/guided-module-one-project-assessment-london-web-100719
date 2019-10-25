@@ -69,6 +69,7 @@ class CommandLineInterface
     end 
 
     def loginoptionmenu
+        @@menu = "loginoptionmenu"
         prompt = TTY::Prompt.new
         @@loginchoice = prompt.select("Here are some options for you. Use the up and down arrows to select the desired option.", cycle: true, per_page: 15) do |menu|
             menu.choice "Find a hotel's review", 0
@@ -81,6 +82,8 @@ class CommandLineInterface
             menu.choice "Modify one of my reviews", 6
             menu.choice "Delete one of my reviews", 7
             menu.choice "Create a new review", 8
+            menu.choice "See all hotels on the app", 14
+            menu.choice "See all users on the app", 15
             menu.choice "Go back to the main menu", 9
             menu.choice "Exit app", 10
         end 
@@ -113,6 +116,12 @@ class CommandLineInterface
         elsif @@nologinchoice == 11 || @@loginchoice == 11
             empty_lines
             most_popular_hotel
+        elsif @@nologinchoice == 14 || @@loginchoice == 14
+            empty_lines 
+            show_all_hotels
+        elsif @@nologinchoice == 15 || @@loginchoice == 15
+            empty_lines
+            show_all_users
         elsif @@loginchoice == 5
             empty_lines
             create_hotel
@@ -125,13 +134,11 @@ class CommandLineInterface
         elsif @@loginchoice == 8
             empty_lines
             create_review
-        elsif @@loginchoice == 9
-            empty_lines
-            mainmenu
         end
     end 
 
     def nologmenu
+        @@menu = "nologmenu"
         puts "Welcome to the no log menu"
         prompt = TTY::Prompt.new
         @@nologinchoice = prompt.select("Here are some options for you. Use the up and down arrows to select the desired option.", cycle: true, per_page: 15) do |menu|
@@ -141,6 +148,8 @@ class CommandLineInterface
             menu.choice "Display a hotel's information", 3
             menu.choice "Find a hotel's average rating", 4
             menu.choice "Find the best rated hotel!", 11
+            menu.choice "See all hotels on the app", 14
+            menu.choice "See all users on the app", 15
             menu.choice "Go back to the main menu", 9
             menu.choice "Exit app", 10
         end
@@ -167,8 +176,13 @@ class CommandLineInterface
             end_of_method
         elsif hotel != nil
             reviews = hotel.reviews #find if a review exists in review for a given hotel, this is the Active Record Shortcut 
-            show_reviews(reviews) #shows the reviews that have been found.
-            end_of_method
+            if reviews.length > 0
+                show_reviews(reviews) #shows the reviews that have been found.
+                end_of_method
+            else 
+                puts "Sorry, no reviews exists for that hotel. Create one!"
+                end_of_method
+            end 
         else 
             puts "Sorry, hotel doesn't exists. Make sure you spelled it correctly \n\n"
             chosen_menu
@@ -348,6 +362,16 @@ class CommandLineInterface
         end 
         puts "Our best rated hotel is:"
         puts all_h_avg.sort_by{|hotel, avg_r| avg_r}.last
+        end_of_method
+    end 
+
+    def show_all_hotels
+        puts Hotel.find_all.map {|h| h.name}
+        end_of_method
+    end 
+
+    def show_all_users 
+        puts User.find_all.map {|u| u.name} #gets data from the model who gets it from the database and then only selects the names
         end_of_method
     end 
 

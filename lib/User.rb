@@ -10,4 +10,10 @@ class User < ActiveRecord::Base
     def self.create_user(user_name, age, email)
         User.create(name: user_name, age: age, email: email)
     end 
+
+    def self.find_all
+        User.all #refers to the users table in database
+    end
+
+
 end 
